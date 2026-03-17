@@ -1,0 +1,451 @@
+/* ============================================
+   下層ページ共通スタイル
+   ============================================ */
+
+/* ---------- Page Hero ---------- */
+.page-hero {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--header-height);
+}
+
+.page-hero-short {
+  height: 300px;
+}
+
+.page-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 27, 42, 0.65);
+}
+
+.page-hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.page-hero-title-en {
+  font-family: var(--font-en);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-white);
+  letter-spacing: 0.2em;
+  line-height: 1;
+}
+
+.page-hero-title-ja {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 12px;
+  letter-spacing: 0.15em;
+}
+
+/* ---------- Breadcrumb ---------- */
+.breadcrumb {
+  background: var(--color-bg);
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.breadcrumb-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+}
+
+.breadcrumb-inner a {
+  color: var(--color-accent);
+}
+
+.breadcrumb-inner a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-inner span {
+  margin: 0 8px;
+}
+
+/* ---------- Page Main ---------- */
+.page-main {
+  padding: 60px 24px 80px;
+}
+
+.page-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ---------- Page Section ---------- */
+.page-section {
+  margin-bottom: 60px;
+}
+
+.page-section:last-child {
+  margin-bottom: 0;
+}
+
+.page-section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 3px solid var(--color-accent);
+  letter-spacing: 0.05em;
+}
+
+.page-section p {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  line-height: 2;
+  margin-bottom: 16px;
+}
+
+.page-section p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Vehicle Grid ---------- */
+.vehicle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.vehicle-card {
+  background: var(--color-bg);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.vehicle-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-card-img {
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+}
+
+.vehicle-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.vehicle-card:hover .vehicle-card-img img {
+  transform: scale(1.05);
+}
+
+.vehicle-card-body {
+  padding: 20px;
+}
+
+.vehicle-card-body h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.vehicle-card-body p {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* ---------- Feature List ---------- */
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.feature-list li {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  padding: 12px 16px 12px 32px;
+  background: var(--color-bg);
+  position: relative;
+}
+
+.feature-list li::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+
+/* ---------- Company Table ---------- */
+.company-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.company-table tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.company-table th,
+.company-table td {
+  padding: 20px 16px;
+  font-size: 0.95rem;
+  vertical-align: top;
+  text-align: left;
+}
+
+.company-table th {
+  width: 200px;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: var(--color-bg);
+  white-space: nowrap;
+}
+
+.company-table td {
+  color: var(--color-text);
+  line-height: 1.8;
+}
+
+/* ---------- Map Container ---------- */
+.map-container {
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.map-container iframe {
+  display: block;
+}
+
+/* ---------- Page CTA ---------- */
+.page-cta {
+  background: var(--color-primary);
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.page-cta-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.page-cta-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 24px;
+  letter-spacing: 0.05em;
+}
+
+.page-cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.page-cta-buttons .btn {
+  min-width: 220px;
+}
+
+.page-cta-buttons .btn-outline:hover {
+  background: var(--color-white);
+  color: var(--color-primary);
+}
+
+/* ---------- Contact Form ---------- */
+.contact-page-tel {
+  display: inline-block;
+  font-family: var(--font-en);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 0.05em;
+  transition: color var(--transition);
+}
+
+.contact-page-tel:hover {
+  color: var(--color-accent);
+}
+
+.contact-form {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.required {
+  display: inline-block;
+  background: #dc3545;
+  color: var(--color-white);
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  font-family: var(--font-ja);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  appearance: none;
+  border-radius: 0;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(58, 139, 178, 0.15);
+}
+
+.form-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 160px;
+}
+
+.form-privacy {
+  margin: 24px 0;
+  text-align: center;
+}
+
+.form-privacy label {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.form-privacy input[type="checkbox"] {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.form-privacy a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.form-submit {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.btn-large {
+  padding: 18px 60px;
+  font-size: 1.05rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .page-hero {
+    height: 280px;
+  }
+
+  .page-hero-short {
+    height: 220px;
+  }
+
+  .page-hero-title-en {
+    font-size: 2rem;
+  }
+
+  .page-main {
+    padding: 40px 20px 60px;
+  }
+
+  .page-section-title {
+    font-size: 1.2rem;
+  }
+
+  .vehicle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-list {
+    grid-template-columns: 1fr;
+  }
+
+  .company-table th {
+    display: block;
+    width: 100%;
+    padding-bottom: 4px;
+  }
+
+  .company-table td {
+    display: block;
+    padding-top: 4px;
+  }
+
+  .page-cta {
+    padding: 40px 20px;
+  }
+
+  .page-cta-text {
+    font-size: 1rem;
+  }
+
+  .page-cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .page-cta-buttons .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .contact-page-tel {
+    font-size: 1.8rem;
+  }
+
+  .btn-large {
+    width: 100%;
+    max-width: 300px;
+  }
+}

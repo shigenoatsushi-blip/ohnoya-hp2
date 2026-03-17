@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お問合せ｜クレーンの大野屋</title>
+  <meta name="description" content="株式会社 大野屋重機建設へのお問合せ。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/page.css">
+</head>
+<body>
+
+  <header id="header" class="scrolled">
+    <div class="header-inner">
+      <div class="logo"><a href="index.html"><span class="logo-main">クレーンの大野屋</span><span class="logo-sub">株式会社 大野屋重機建設</span></a></div>
+      <nav id="nav" class="global-nav">
+        <ul class="nav-list">
+          <li><a href="index.html"><span>トップページ</span><small>HOME</small></a></li>
+          <li><a href="crane.html"><span>ラフテレーンクレーン</span><small>CRANE</small></a></li>
+          <li><a href="kousyo.html"><span>高所作業車</span><small>AERIAL WORK</small></a></li>
+          <li><a href="josetsu.html"><span>除雪車</span><small>SNOW REMOVAL</small></a></li>
+          <li><a href="company.html"><span>会社概要</span><small>COMPANY</small></a></li>
+          <li><a href="contact.html" class="active"><span>お問合せ</span><small>CONTACT</small></a></li>
+          <li class="nav-tel"><a href="tel:0257523723"><span>TEL. 025-752-3723</span><small>新潟県十日町市</small></a></li>
+        </ul>
+      </nav>
+      <button id="hamburger" class="hamburger" aria-label="メニューを開く"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <section class="page-hero page-hero-short" style="background-image: url('http://on8.jp/wp-content/uploads/2016/08/cropped-crane05L.jpg');">
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <h1 class="page-hero-title-en">CONTACT</h1>
+      <p class="page-hero-title-ja">お問合せ</p>
+    </div>
+  </section>
+
+  <nav class="breadcrumb">
+    <div class="breadcrumb-inner">
+      <a href="index.html">HOME</a> <span>&gt;</span> <span>お問合せ</span>
+    </div>
+  </nav>
+
+  <main class="page-main">
+    <div class="page-content">
+
+      <!-- 電話 -->
+      <section class="page-section fade-in" style="text-align:center;">
+        <h2 class="page-section-title" style="text-align:center;">お電話でのお問合せ</h2>
+        <p style="margin-bottom:12px;">お気軽にお電話ください。</p>
+        <a href="tel:0257523723" class="contact-page-tel">025-752-3723</a>
+        <p style="color:#666;font-size:0.85rem;margin-top:8px;">FAX. 025-757-1499</p>
+      </section>
+
+      <!-- フォーム -->
+      <section class="page-section fade-in">
+        <h2 class="page-section-title">メールでのお問合せ</h2>
+        <p style="margin-bottom:24px;">下記フォームに必要事項をご入力の上、送信ボタンを押してください。<br>内容を確認次第、担当者よりご連絡いたします。</p>
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label for="name">お名前 <span class="required">必須</span></label>
+            <input type="text" id="name" name="name" required placeholder="例：大野屋 太郎">
+          </div>
+          <div class="form-group">
+            <label for="company">会社名・団体名</label>
+            <input type="text" id="company" name="company" placeholder="例：〇〇建設株式会社">
+          </div>
+          <div class="form-group">
+            <label for="email">メールアドレス <span class="required">必須</span></label>
+            <input type="email" id="email" name="email" required placeholder="例：info@example.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">電話番号</label>
+            <input type="tel" id="phone" name="phone" placeholder="例：025-752-3723">
+          </div>
+          <div class="form-group">
+            <label for="category">お問合せ種別</label>
+            <select id="category" name="category">
+              <option value="">選択してください</option>
+              <option value="crane">ラフテレーンクレーンについて</option>
+              <option value="aerial">高所作業車について</option>
+              <option value="snow">除雪車について</option>
+              <option value="estimate">お見積りのご依頼</option>
+              <option value="other">その他</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">お問合せ内容 <span class="required">必須</span></label>
+            <textarea id="message" name="message" rows="8" required placeholder="お問合せ内容をご記入ください"></textarea>
+          </div>
+          <div class="form-privacy">
+            <label>
+              <input type="checkbox" id="privacy" required>
+              <a href="#">個人情報の取り扱い</a>に同意する
+            </label>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary btn-large">送信する</button>
+          </div>
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <footer id="footer">
+    <div class="footer-inner">
+      <div class="footer-info">
+        <div class="footer-logo"><span class="logo-main">クレーンの大野屋</span><span class="logo-sub">株式会社 大野屋重機建設</span></div>
+        <p class="footer-address">〒948-0005 新潟県十日町市四日町新田236番地3<br>TEL. 025-752-3723 / FAX. 025-757-1499</p>
+      </div>
+      <nav class="footer-nav"><ul><li><a href="index.html">トップページ</a></li><li><a href="crane.html">ラフテレーンクレーン</a></li><li><a href="kousyo.html">高所作業車</a></li><li><a href="josetsu.html">除雪車</a></li><li><a href="company.html">会社概要</a></li><li><a href="contact.html">お問合せ</a></li></ul></nav>
+    </div>
+    <div class="footer-bottom"><small>&copy; 2026 株式会社 大野屋重機建設 All Rights Reserved.</small></div>
+  </footer>
+
+  <button id="scrollTop" class="scroll-top" aria-label="ページトップへ戻る"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg></button>
+  <script src="js/main.js"></script>
+</body>
+</html>
