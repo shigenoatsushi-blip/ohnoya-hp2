@@ -162,6 +162,21 @@
   flex-wrap: wrap;
 }
 
+.catalog-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  padding: 4px 12px;
+  transition: background var(--transition), color var(--transition);
+}
+
+.catalog-link:hover {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
 .vehicle-count {
   font-size: 0.75rem;
   font-weight: 500;
