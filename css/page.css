@@ -156,6 +156,20 @@
   font-weight: 700;
   color: var(--color-primary);
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vehicle-count {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-white);
+  background: var(--color-accent);
+  padding: 2px 8px;
+  border-radius: 2px;
+  white-space: nowrap;
 }
 
 .vehicle-card-body p {
@@ -379,6 +393,37 @@
 .btn-large {
   padding: 18px 60px;
   font-size: 1.05rem;
+}
+
+/* ---------- Privacy Contact ---------- */
+.privacy-contact {
+  margin-top: 16px;
+}
+
+.privacy-contact dt {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-top: 16px;
+}
+
+.privacy-contact dt:first-child {
+  margin-top: 0;
+}
+
+.privacy-contact dd {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin: 4px 0 0 0;
+  line-height: 1.7;
+}
+
+.privacy-contact dd a {
+  color: var(--color-accent);
+}
+
+.privacy-contact dd a:hover {
+  text-decoration: underline;
 }
 
 /* ---------- Responsive ---------- */
