@@ -162,6 +162,17 @@
   flex-wrap: wrap;
 }
 
+.vehicle-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.vehicle-links .catalog-link {
+  margin-top: 0;
+}
+
 .catalog-link {
   display: inline-block;
   margin-top: 12px;
