@@ -10,10 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sessionStorage.getItem('splashShown')) {
       splash.style.display = 'none';
     } else {
+      document.body.style.overflow = 'hidden';
       sessionStorage.setItem('splashShown', '1');
       setTimeout(() => {
         splash.classList.add('hidden');
-        setTimeout(() => { splash.style.display = 'none'; }, 800);
+        setTimeout(() => {
+          splash.style.display = 'none';
+          document.body.style.overflow = '';
+        }, 800);
       }, 2500);
     }
   }

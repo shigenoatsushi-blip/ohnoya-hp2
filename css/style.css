@@ -717,6 +717,7 @@ ul {
   align-items: center;
   justify-content: center;
   transition: opacity 0.8s ease;
+  background-color: #000;
 }
 
 #splash.hidden {
