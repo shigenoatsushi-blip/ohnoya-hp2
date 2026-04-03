@@ -944,6 +944,18 @@ ul {
   text-align: center;
 }
 
+.footer-banner img {
+  height: 40px;
+  width: auto;
+  display: block;
+  opacity: 0.85;
+  transition: opacity var(--transition);
+}
+
+.footer-banner:hover img {
+  opacity: 1;
+}
+
 .footer-bottom small {
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.4);
