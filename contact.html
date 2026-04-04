@@ -62,7 +62,8 @@
       <section class="page-section fade-in">
         <h2 class="page-section-title">メールでのお問合せ</h2>
         <p style="margin-bottom:24px;">下記フォームに必要事項をご入力の上、送信ボタンを押してください。<br>内容を確認次第、担当者よりご連絡いたします。</p>
-        <form class="contact-form" id="contactForm">
+        <form class="contact-form" name="contact" method="POST" data-netlify="true" action="/thanks.html">
+          <input type="hidden" name="form-name" value="contact">
           <div class="form-group">
             <label for="name">お名前 <span class="required">必須</span></label>
             <input type="text" id="name" name="name" required placeholder="例：大野屋 太郎">
