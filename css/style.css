@@ -883,6 +883,10 @@ ul {
   color: var(--color-text-light);
 }
 
+.lightwidget-widget {
+  margin-bottom: 16px;
+}
+
 /* ============================================
    FOOTER
    ============================================ */
