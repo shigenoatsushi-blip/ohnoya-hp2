@@ -25,6 +25,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Hero Slider ---------- */
   const slides = document.querySelectorAll('.hero-slide');
+
+  function applyHeroBg() {
+    const isMobile = window.innerWidth < 768;
+    slides.forEach(slide => {
+      const bg = isMobile ? slide.dataset.spBg : slide.dataset.pcBg;
+      if (bg) slide.style.backgroundImage = `url('${bg}')`;
+    });
+  }
+  applyHeroBg();
+  window.addEventListener('resize', applyHeroBg);
+
   if (slides.length > 1) {
     let current = 0;
     setInterval(() => {
