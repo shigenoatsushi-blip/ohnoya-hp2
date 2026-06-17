@@ -1,0 +1,295 @@
+/* ============================================
+   クレーン性能比較表 専用スタイル
+   ============================================ */
+
+/* ---------- Page Title ---------- */
+.page-title-section {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  padding: calc(var(--header-height) + 40px) 24px 50px;
+  text-align: center;
+  color: var(--color-white);
+}
+
+.page-title-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.page-title-en {
+  font-family: var(--font-en);
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin: 0 0 8px;
+  color: var(--color-white);
+}
+
+.page-title-ja {
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  margin: 0;
+  color: var(--color-accent-light);
+}
+
+/* ---------- Simulator Card ---------- */
+.spec-sim {
+  background: var(--color-bg);
+  padding: 50px 24px 30px;
+}
+
+.spec-sim-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.spec-sim-card {
+  background: var(--color-white);
+  border-left: 6px solid var(--color-accent);
+  border-radius: 8px;
+  padding: 30px 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.spec-sim-text h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 12px;
+}
+
+.spec-sim-text p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--color-text);
+  margin: 0 0 20px;
+}
+
+.spec-sim-btn {
+  display: inline-block;
+}
+
+.spec-sim-btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Compare Table ---------- */
+.spec-compare {
+  background: var(--color-white);
+  padding: 30px 24px 60px;
+}
+
+.spec-compare-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.spec-table-wrap {
+  overflow-x: auto;
+  margin-top: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.spec-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: var(--color-white);
+}
+
+.spec-table thead th {
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: 14px 8px;
+  font-weight: 700;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  vertical-align: middle;
+}
+
+.spec-table thead th:last-child {
+  border-right: none;
+}
+
+.spec-table thead th small {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-accent-light);
+  margin-top: 2px;
+}
+
+.spec-table tbody th {
+  background: var(--color-bg);
+  color: var(--color-primary);
+  padding: 14px 12px;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.spec-table tbody th small {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-text-light);
+  margin-top: 2px;
+}
+
+.spec-table tbody td {
+  padding: 14px 8px;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  color: var(--color-text);
+  vertical-align: middle;
+}
+
+.spec-table tbody td:last-child {
+  border-right: none;
+}
+
+.spec-table tbody td small {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  margin-top: 2px;
+}
+
+.spec-table tbody tr:last-child th,
+.spec-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.spec-table tbody tr:hover td,
+.spec-table tbody tr:hover th {
+  background: rgba(58, 139, 178, 0.06);
+}
+
+.spec-note {
+  margin-top: 16px;
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+}
+
+.spec-print-row {
+  margin-top: 24px;
+  text-align: center;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 768px) {
+  .page-title-en {
+    font-size: 1.8rem;
+  }
+
+  .page-title-ja {
+    font-size: 0.95rem;
+  }
+
+  .spec-sim {
+    padding: 30px 16px 20px;
+  }
+
+  .spec-sim-card {
+    padding: 22px 20px;
+    border-left-width: 4px;
+  }
+
+  .spec-sim-text h2 {
+    font-size: 1.15rem;
+  }
+
+  .spec-sim-text p {
+    font-size: 0.88rem;
+  }
+
+  .spec-compare {
+    padding: 24px 16px 40px;
+  }
+
+  .spec-table {
+    font-size: 0.78rem;
+    min-width: 680px;
+  }
+
+  .spec-table thead th,
+  .spec-table tbody th,
+  .spec-table tbody td {
+    padding: 10px 6px;
+  }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  #header,
+  #footer,
+  .page-title-section,
+  .spec-sim,
+  .spec-print-row,
+  #scrollTop,
+  #hamburger {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .spec-compare {
+    padding: 0;
+  }
+
+  .spec-table-wrap {
+    border: 1px solid #888;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .spec-table {
+    min-width: 0;
+    width: 100%;
+    font-size: 0.7rem;
+  }
+
+  .spec-table thead th {
+    background: #333 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .spec-table thead th small {
+    color: #ddd !important;
+  }
+
+  .spec-table tbody th {
+    background: #f5f5f5 !important;
+    color: #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .spec-table tbody td {
+    color: #000 !important;
+  }
+
+  .spec-note {
+    color: #333;
+    font-size: 0.68rem;
+    margin-top: 8px;
+  }
+
+  @page {
+    size: A4 landscape;
+    margin: 12mm 10mm;
+  }
+}

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>クレーン3Dシミュレータ｜株式会社 大野屋重機建設</title>
+  <link rel="icon" href="../favicon.ico">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #0d1b2a; color: #fff; overflow: hidden; }
+    body { display: grid; grid-template-columns: 1fr 280px; grid-template-rows: auto 1fr auto; grid-template-areas: "header header" "canvas side" "controls side"; height: 100vh; }
+
+    header { grid-area: header; background: rgba(13, 27, 42, 0.9); padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .header-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    h1 { font-size: 14px; font-weight: 600; color: #84becc; letter-spacing: 0.05em; }
+    h1 small { font-weight: 400; color: #94a3b8; margin-left: 8px; font-size: 11px; }
+    .header-actions { display: flex; gap: 6px; align-items: center; }
+    .back-link, .header-btn { font-size: 12px; color: #84becc; text-decoration: none; padding: 6px 10px; border: 1px solid #3a8bb2; border-radius: 4px; transition: 0.2s; background: none; cursor: pointer; }
+    .back-link:hover, .header-btn:hover { background: #3a8bb2; color: #fff; }
+
+    #canvas-wrap { grid-area: canvas; position: relative; background: linear-gradient(180deg, #1a2d42 0%, #2a4a6b 100%); overflow: hidden; }
+    canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+
+    #overlay { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); padding: 10px 14px; border-radius: 6px; font-size: 11px; line-height: 1.7; color: #cbd5e1; pointer-events: none; min-width: 180px; }
+    .verdict { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 700; text-align: center; backdrop-filter: blur(8px); box-shadow: 0 2px 12px rgba(0,0,0,0.4); pointer-events: none; min-width: 240px; max-width: 90%; }
+    .verdict.ok { background: rgba(34, 197, 94, 0.85); color: #fff; }
+    .verdict.ng { background: rgba(239, 68, 68, 0.85); color: #fff; }
+    .verdict.warn { background: rgba(245, 158, 11, 0.85); color: #fff; }
+    .verdict-sub { font-size: 10px; font-weight: 400; margin-top: 2px; opacity: 0.95; }
+    #overlay strong { color: #84becc; }
+    #overlay span { color: #fff; font-weight: 600; font-family: ui-monospace, monospace; }
+
+    /* ズーム/視点コントロール */
+    .floating-controls { position: absolute; bottom: 14px; left: 14px; display: flex; flex-direction: column; gap: 6px; }
+    .fc-row { display: flex; gap: 4px; }
+    .fc-btn { background: rgba(13, 27, 42, 0.85); backdrop-filter: blur(8px); color: #84becc; border: 1px solid rgba(58, 139, 178, 0.5); padding: 8px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; min-width: 38px; font-weight: 600; }
+    .fc-btn:hover { background: #3a8bb2; color: #fff; border-color: #3a8bb2; }
+    .fc-btn svg { width: 14px; height: 14px; }
+
+    #helpToggle { position: absolute; top: 10px; right: 10px; background: rgba(58, 139, 178, 0.85); border: none; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; }
+    #help { position: absolute; top: 44px; right: 10px; background: rgba(0,0,0,0.9); padding: 12px 16px; border-radius: 6px; font-size: 11px; line-height: 1.8; color: #cbd5e1; max-width: 240px; display: none; }
+    #help.show { display: block; }
+    #help kbd { background: #334155; padding: 2px 6px; border-radius: 3px; font-family: ui-monospace, monospace; font-size: 10px; }
+
+    /* サイドパネル（障害物リスト） */
+    aside { grid-area: side; background: #142337; border-left: 1px solid rgba(255,255,255,0.08); overflow-y: auto; padding: 14px 12px; }
+    aside h3 { font-size: 12px; color: #84becc; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 8px; text-transform: uppercase; }
+    .obs-add-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 12px; }
+    .obs-add { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; padding: 8px 4px; border-radius: 4px; font-size: 10px; cursor: pointer; transition: 0.2s; }
+    .obs-add:hover { background: #3a8bb2; border-color: #3a8bb2; color: #fff; }
+    .obs-add-icon { display: inline-block; width: 8px; height: 8px; border-radius: 1px; margin-right: 4px; vertical-align: middle; }
+
+    #obsList { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+    .obs-empty { font-size: 10px; color: #64748b; padding: 12px 6px; text-align: center; line-height: 1.6; font-style: italic; }
+    .obs-row { display: grid; grid-template-columns: auto 1fr auto; gap: 6px; align-items: center; padding: 7px 8px; background: rgba(255,255,255,0.04); border-radius: 4px; cursor: pointer; transition: 0.15s; }
+    .obs-row:hover { background: rgba(255,255,255,0.08); }
+    .obs-row.selected { background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; }
+    .obs-dot { width: 9px; height: 9px; border-radius: 2px; }
+    .obs-name { font-size: 11px; color: #cbd5e1; font-weight: 600; }
+    .obs-pos { display: block; grid-column: 2; font-size: 9px; color: #94a3b8; font-family: ui-monospace, monospace; }
+    .obs-del { background: rgba(239,68,68,0.2); color: #fca5a5; border: none; width: 22px; height: 22px; border-radius: 3px; font-size: 14px; cursor: pointer; line-height: 1; }
+    .obs-del:hover { background: #ef4444; color: #fff; }
+
+    .side-note { margin-top: 14px; padding: 8px 10px; background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b; border-radius: 3px; font-size: 10px; line-height: 1.6; color: #fcd34d; }
+
+    .size-panel { margin-top: 14px; padding: 10px 12px; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; }
+    .size-title { font-weight: 400; color: #fcd34d; text-transform: none; letter-spacing: 0; font-size: 11px; margin-left: 6px; }
+    .size-ctrl { margin-top: 6px; }
+    .size-ctrl label { display: flex; justify-content: space-between; font-size: 10px; color: #cbd5e1; margin-bottom: 2px; }
+    .size-ctrl label span { color: #84becc; font-weight: 700; font-family: ui-monospace, monospace; }
+    .size-ctrl input[type=range] { width: 100%; accent-color: #f59e0b; }
+
+    /* 下部コントロール */
+    .controls { grid-area: controls; background: #1a2d42; border-top: 1px solid rgba(255,255,255,0.1); padding: 12px 16px; overflow-y: auto; max-height: 220px; }
+    .ctrl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 18px; }
+    .ctrl { display: flex; flex-direction: column; gap: 3px; }
+    .ctrl-label { display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; }
+    .ctrl-label .value { color: #84becc; font-weight: 700; font-family: ui-monospace, monospace; }
+    .ctrl input[type=range] { width: 100%; accent-color: #3a8bb2; }
+    .ctrl .chips { display: flex; gap: 4px; flex-wrap: wrap; }
+    .chip { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; padding: 4px 8px; border-radius: 999px; font-size: 11px; cursor: pointer; transition: 0.2s; }
+    .chip.active { background: #3a8bb2; border-color: #3a8bb2; color: #fff; }
+    .chip:hover { border-color: #3a8bb2; }
+    .chip.chip-disabled { opacity: 0.45; border-style: dashed; }
+    .chip.chip-disabled:hover { border-color: rgba(255,255,255,0.15); }
+
+    .ctrl-row-actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .jib-detail-grid { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; background: rgba(245, 158, 11, 0.06); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 4px; }
+    .jib-detail-row { display: grid; grid-template-columns: 80px 1fr; align-items: center; gap: 8px; }
+    .jib-detail-label { font-size: 10px; color: #fcd34d; font-weight: 600; }
+    .jib-detail-note { margin-top: 6px; font-size: 10px; color: #fcd34d; opacity: 0.85; line-height: 1.5; }
+    .jib-detail-note strong { color: #fff; }
+
+    .weight-input-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    .weight-btn { background: rgba(58, 139, 178, 0.85); border: none; color: #fff; width: 30px; height: 30px; border-radius: 4px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.15s; }
+    .weight-btn:hover { background: #3a8bb2; }
+    .weight-btn:active { transform: scale(0.95); }
+    #setWeightNum { width: 80px; height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 0 8px; border-radius: 4px; font-size: 14px; font-weight: 700; font-family: ui-monospace, monospace; text-align: right; }
+    #setWeightNum:focus { outline: none; border-color: #3a8bb2; background: rgba(58, 139, 178, 0.15); }
+    .weight-unit { color: #84becc; font-weight: 700; font-size: 13px; margin-right: 4px; }
+    .weight-presets { display: flex; gap: 3px; flex-wrap: wrap; margin-left: 4px; }
+    .weight-preset { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; padding: 4px 7px; border-radius: 3px; font-size: 10px; cursor: pointer; transition: 0.15s; }
+    .weight-preset:hover { background: #3a8bb2; border-color: #3a8bb2; color: #fff; }
+    .btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 5px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: 0.2s; }
+    .btn:hover { background: #3a8bb2; border-color: #3a8bb2; color: #fff; }
+    .btn-primary { background: #3a8bb2; border-color: #3a8bb2; color: #fff; }
+    .btn-primary:hover { background: #2a6f95; }
+
+    /* モバイル */
+    @media (max-width: 768px) {
+      body { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto auto; grid-template-areas: "header" "canvas" "controls" "side"; }
+      aside { max-height: 200px; border-left: none; border-top: 1px solid rgba(255,255,255,0.08); }
+      .controls { max-height: 240px; }
+      .header-row h1 { font-size: 12px; }
+      .header-actions { gap: 4px; }
+      .back-link, .header-btn { padding: 5px 8px; font-size: 11px; }
+      .floating-controls { bottom: 8px; left: 8px; }
+      .fc-btn { padding: 7px 9px; min-width: 36px; }
+    }
+
+    /* 印刷 */
+    @media print {
+      body { display: block; background: #fff; color: #000; height: auto; overflow: visible; }
+      header, aside, .controls, .floating-controls, #helpToggle, #help { display: none !important; }
+      #canvas-wrap { background: #fff; height: 100vh; page-break-after: always; }
+      canvas { width: 100% !important; height: 100% !important; }
+      #overlay { background: rgba(255,255,255,0.9); color: #000; border: 1px solid #ccc; }
+      #overlay strong { color: #1a2d42; }
+      #overlay span { color: #000; }
+      @page { size: A4 landscape; margin: 10mm; }
+    }
+  </style>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="header-row">
+      <h1>クレーン3Dシミュレータ <small>※プロトタイプ</small></h1>
+      <div class="header-actions">
+        <button id="printBtn" class="header-btn">PDF/印刷</button>
+        <a href="../crane-spec.html" class="back-link">← 性能比較表に戻る</a>
+      </div>
+    </div>
+  </header>
+
+  <div id="canvas-wrap">
+    <canvas id="scene"></canvas>
+    <div id="overlay">
+      <div><strong>機種:</strong> <span id="ovCrane">--</span></div>
+      <div><strong>作業半径:</strong> <span id="ovRadius">--</span> m</div>
+      <div><strong>フック揚程:</strong> <span id="ovHeight">--</span> m</div>
+      <div><strong>ブーム長:</strong> <span id="ovBoom">--</span> m</div>
+      <div><strong>ブーム角度:</strong> <span id="ovAngle">--</span>°</div>
+      <hr style="border-color: rgba(255,255,255,0.15); margin: 4px 0;">
+      <div><strong>最大吊上荷重:</strong> <span id="ovMaxLoad">—</span></div>
+      <div><strong>最適ブーム長:</strong> <span id="ovBestBoom">—</span></div>
+    </div>
+
+    <div id="verdict" class="verdict">
+      <div id="verdictText">判定中...</div>
+      <div id="verdictSub" class="verdict-sub"></div>
+    </div>
+
+    <div class="floating-controls">
+      <div class="fc-row">
+        <button class="fc-btn" id="zoomIn" title="ズームイン">＋</button>
+        <button class="fc-btn" id="zoomOut" title="ズームアウト">−</button>
+      </div>
+      <div class="fc-row">
+        <button class="fc-btn" id="viewIso" title="斜め視点">斜</button>
+        <button class="fc-btn" id="viewFront" title="正面">前</button>
+        <button class="fc-btn" id="viewSide" title="側面">側</button>
+        <button class="fc-btn" id="viewTop" title="上面">上</button>
+      </div>
+    </div>
+
+    <button id="helpToggle">操作方法</button>
+    <div id="help">
+      <div><strong>3Dビュー操作</strong></div>
+      <div>左ドラッグ: 回転</div>
+      <div>右ドラッグ: パン</div>
+      <div>ホイール: ズーム</div>
+      <div>タッチ: 1本指=回転 / 2本指=ズーム・パン</div>
+      <hr style="border-color: rgba(255,255,255,0.1); margin: 8px 0;">
+      <div><strong>障害物</strong></div>
+      <div>右パネルから追加</div>
+      <div>3D上でドラッグして移動</div>
+      <div>クリックで選択、<kbd>Del</kbd>で削除</div>
+      <hr style="border-color: rgba(255,255,255,0.1); margin: 8px 0;">
+      <div>キーボード: <kbd>R</kbd>リセット / <kbd>F</kbd>正面 / <kbd>S</kbd>側面 / <kbd>T</kbd>上面</div>
+    </div>
+  </div>
+
+  <aside>
+    <h3>障害物を追加</h3>
+    <div class="obs-add-grid" id="obsAddBtns">
+      <button class="obs-add" data-type="building"><span class="obs-add-icon" style="background:#64748b"></span>建物</button>
+      <button class="obs-add" data-type="tree"><span class="obs-add-icon" style="background:#16a34a"></span>樹木</button>
+      <button class="obs-add" data-type="electric"><span class="obs-add-icon" style="background:#ef4444"></span>電線</button>
+      <button class="obs-add" data-type="wall"><span class="obs-add-icon" style="background:#9ca3af"></span>塀</button>
+      <button class="obs-add" data-type="vehicle"><span class="obs-add-icon" style="background:#2563eb"></span>車両</button>
+      <button class="obs-add" data-type="other"><span class="obs-add-icon" style="background:#a855f7"></span>その他</button>
+    </div>
+
+    <h3>配置済み</h3>
+    <div id="obsList"></div>
+
+    <div id="obsSizePanel" class="size-panel" style="display:none;">
+      <h3>サイズ調整 <span id="sizeTitle" class="size-title"></span></h3>
+      <div class="size-ctrl">
+        <label>幅 <span id="sizeV_w">2.0 m</span></label>
+        <input type="range" id="size_w" min="0.2" max="20" step="0.1">
+      </div>
+      <div class="size-ctrl">
+        <label>高さ <span id="sizeV_h">2.0 m</span></label>
+        <input type="range" id="size_h" min="0.2" max="30" step="0.1">
+      </div>
+      <div class="size-ctrl">
+        <label>奥行 <span id="sizeV_d">2.0 m</span></label>
+        <input type="range" id="size_d" min="0.2" max="20" step="0.1">
+      </div>
+    </div>
+
+    <div class="side-note">
+      ※ 追加した障害物は3D空間でドラッグ移動できます。クリックで選択→サイズ調整・×で削除。
+    </div>
+  </aside>
+
+  <div class="controls">
+    <div class="ctrl-grid">
+      <div class="ctrl">
+        <div class="ctrl-label">機種</div>
+        <div class="chips" id="craneChips">
+          <button class="chip" data-crane="gr130nl">13t</button>
+          <button class="chip" data-crane="gr160n4">16t</button>
+          <button class="chip" data-crane="gr250n4">25t</button>
+          <button class="chip" data-crane="gr600n">60t</button>
+          <button class="chip" data-crane="gr700n3">70t</button>
+          <button class="chip active" data-crane="gr1000n">100t</button>
+        </div>
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-label">性能チャート (モード)</div>
+        <div class="chips" id="modeChips"></div>
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-label">設定荷重（吊荷の重さ）</div>
+        <div class="weight-input-row">
+          <button class="weight-btn" id="weightMinus">−</button>
+          <input type="number" id="setWeightNum" min="0.05" max="200" step="0.1" value="5.0">
+          <span class="weight-unit">t</span>
+          <button class="weight-btn" id="weightPlus">＋</button>
+          <div class="weight-presets">
+            <button class="weight-preset" data-w="0.5">0.5t</button>
+            <button class="weight-preset" data-w="1">1t</button>
+            <button class="weight-preset" data-w="2">2t</button>
+            <button class="weight-preset" data-w="5">5t</button>
+            <button class="weight-preset" data-w="10">10t</button>
+            <button class="weight-preset" data-w="20">20t</button>
+          </div>
+        </div>
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-label">ブーム長 <span class="value"><span id="vBoomLen">10.2</span> m</span></div>
+        <input type="range" id="boomLen" min="10.2" max="48.0" step="0.1" value="10.2">
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-label">ブーム角度 <span class="value"><span id="vBoomAngle">60</span>°</span></div>
+        <input type="range" id="boomAngle" min="0" max="82" step="1" value="60">
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-label">旋回方向 <span class="value"><span id="vSwing">0</span>°</span></div>
+        <input type="range" id="swing" min="0" max="360" step="1" value="0">
+      </div>
+      <div class="ctrl" id="jibDetailPanel" style="grid-column: 1 / -1;">
+        <div class="ctrl-label" style="color:#f59e0b; font-weight:700; margin-bottom:4px;">▼ ジブ設定（性能判定込み）</div>
+        <div class="jib-detail-grid">
+          <div class="jib-detail-row">
+            <span class="jib-detail-label">ジブ長</span>
+            <div class="chips" id="jibLenChips"></div>
+          </div>
+          <div id="jibChartRow" class="jib-detail-row">
+            <span class="jib-detail-label">チャート</span>
+            <div class="chips" id="jibChartChips"></div>
+          </div>
+          <div id="jibBoomRow" class="jib-detail-row">
+            <span class="jib-detail-label">ブーム長</span>
+            <div class="chips" id="jibBoomChips"></div>
+          </div>
+          <div id="jibOffsetRow" class="jib-detail-row">
+            <span class="jib-detail-label">オフセット</span>
+            <div class="chips" id="jibOffsetChips"></div>
+          </div>
+        </div>
+        <div class="jib-detail-note" id="jibDetailNote">
+          ※ ジブ使用時は <strong>ブーム長</strong> も性能表に載っている組合せから選択してください。選択するとメインのブーム長スライダーも追従します。
+        </div>
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-label">アウトリガ張出</div>
+        <div class="chips" id="outrChips"></div>
+      </div>
+    </div>
+    <div class="ctrl-row-actions">
+      <button class="btn" id="presetBoom">ブーム水平 (0°)</button>
+      <button class="btn" id="presetMid">中ブーム (60°)</button>
+      <button class="btn" id="presetUp">ブーム起こし (最大)</button>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+  <script>
+    // 機種ラベルをオーバーレイに反映
+    document.addEventListener('DOMContentLoaded', () => {
+      const labels = {
+        gr130nl: 'GR-130NL (13t)',
+        gr160n4: 'GR-160N-4 (16t)',
+        gr250n4: 'GR-250N-4 (25t)',
+        gr600n:  'GR-600N-3 (60t)',
+        gr700n3: 'GR-700N-3 (70t)',
+        gr1000n: 'GR-1000N-1 (100t)',
+      };
+      document.querySelectorAll('#craneChips .chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          document.getElementById('ovCrane').textContent = labels[chip.dataset.crane];
+        });
+      });
+      document.getElementById('ovCrane').textContent = labels.gr1000n;
+    });
+  </script>
+</body>
+</html>
